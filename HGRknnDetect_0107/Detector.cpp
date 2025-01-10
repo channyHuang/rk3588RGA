@@ -22,7 +22,7 @@ Detector::~Detector() {
     m_pInstance = nullptr;
 }
 // 初始化，输入权重模型路径名称，加载模型
-bool Detector::init(const char* model_path) {
+bool Detector::init_old(const char* model_path) {
     memset(&rknn_app_ctx, 0, sizeof(rknn_app_context_t));
     int ret = init_post_process();
     if (ret != 0) {
@@ -43,7 +43,7 @@ bool Detector::init(const char* model_path) {
     return true;
 }
 
-bool Detector::init_crop(const char* model_path, int nThreadNum) {
+bool Detector::init(const char* model_path, int nThreadNum) {
     memset(&src_image, 0, sizeof(image_buffer_t));
     int ret = init_post_process();
     if (ret != 0) {
@@ -62,12 +62,12 @@ bool Detector::init_crop(const char* model_path, int nThreadNum) {
     return true;
 }
 
-bool Detector::deinit() {
+bool Detector::deinit_old() {
     release();
     return true;
 }
 
-bool Detector::deinit_crop() {
+bool Detector::deinit() {
     memset(&src_image, 0, sizeof(image_buffer_t));
     deinit_post_process();
     m_pool.deinit();
@@ -112,7 +112,7 @@ bool Detector::copyImageData(char* pChar, int nWidth, int nHeight, image_buffer_
 }
 
 // 检测，输入图像数据及图像宽高，输出检测信息
-stDetectResult* Detector::detect(char* pChar, int nWidth, int nHeight) {
+stDetectResult* Detector::detect_old(char* pChar, int nWidth, int nHeight) {
     bool suc = copyImageData(pChar, nWidth, nHeight, src_image);
     if (!suc) {
         return &stResult;
@@ -181,7 +181,7 @@ stDetectResult* Detector::detect(char* pChar, int nWidth, int nHeight) {
     return &stResult;
 }
 
-stDetectResult* Detector::detect_crop(char* pChar, int nWidth, int nHeight) {
+stDetectResult* Detector::detect(char* pChar, int nWidth, int nHeight) {
     bool suc = copyImageData(pChar, nWidth, nHeight, src_image);
     if (!suc) {
         printf("input frame convert to image failed\n");
@@ -260,16 +260,16 @@ stDetectResult* Detector::detect_crop(char* pChar, int nWidth, int nHeight) {
             //                 cv::Point(x2 * m_nFillHeight * 1.f / m_nModelWidth, y2* m_nFillWidth * 1.f / m_nModelHeight), cv::Scalar(0, 0, 255), 3);
             if (res_stImgWithId.bRotate) {
                 // resize model size -> fill size
-                x1 = (std::floor(x1 * m_nFillHeight * 1.f/ m_nModelWidth));
-                y1 = (std::floor(y1 * m_nFillWidth * 1.f / m_nModelHeight) );
-                x2 = (std::ceil(x2 * m_nFillHeight * 1.f / m_nModelWidth));
-                y2 = (std::ceil(y2 * m_nFillWidth * 1.f / m_nModelHeight));
+                int tmp_x1 = (std::floor(x1 * m_nFillHeight * 1.f/ m_nModelWidth));
+                int tmp_y1 = (std::floor(y1 * m_nFillWidth * 1.f / m_nModelHeight) );
+                int tmp_x2 = (std::ceil(x2 * m_nFillHeight * 1.f / m_nModelWidth));
+                int tmp_y2 = (std::ceil(y2 * m_nFillWidth * 1.f / m_nModelHeight));
                 // cv::rectangle(sizeimg, cv::Point(x1, y1), cv::Point(x2, y2), cv::Scalar(0, 0, 255), 3);
                 // rotate
-                x1 = y1;
-                y1 = m_nFillHeight - x2;
-                x2 = y2;
-                y2 = y1 + std::abs(x2 - x1);
+                x1 = tmp_y1;
+                y1 = m_nFillHeight - tmp_x2;
+                x2 = tmp_y2;
+                y2 = y1 + std::abs(tmp_x2 - tmp_x1);
 
                 // cv::rectangle(rotimg, cv::Point(x1, y1), cv::Point(x2, y2), cv::Scalar(0, 0, 255), 3);
                 // offset

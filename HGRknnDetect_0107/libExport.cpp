@@ -12,33 +12,33 @@ void hglog(const char* pString)
     off.close();
 }
 
+bool init_old(const char* pModelString)
+{
+    return Detector::getInstance()->init_old(pModelString);
+}
+
 bool init(const char* pModelString)
 {
     return Detector::getInstance()->init(pModelString);
 }
 
-bool init_crop(const char* pModelString)
+stDetectResult* detect_old(char* pChar, int nWidth, int nHeight)
 {
-    return Detector::getInstance()->init_crop(pModelString);
+    return Detector::getInstance()->detect_old(pChar, nWidth, nHeight);
 }
 
-stDetectResult* detect(char* pChar, int nWidth, int nHeight)
-{
-    return Detector::getInstance()->detect(pChar, nWidth, nHeight);
+stDetectResult* detect(char* pChar, int src_width, int src_height) {
+    return Detector::getInstance()->detect(pChar, src_width, src_height);
 }
 
-stDetectResult* detect_crop(char* pChar, int src_width, int src_height) {
-    return Detector::getInstance()->detect_crop(pChar, src_width, src_height);
+bool deinit_old()
+{
+    return Detector::getInstance()->deinit_old();
 }
 
 bool deinit()
 {
     return Detector::getInstance()->deinit();
-}
-
-bool deinit_crop()
-{
-    return Detector::getInstance()->deinit_crop();
 }
 
 void setThreshold(float fThreshold) {

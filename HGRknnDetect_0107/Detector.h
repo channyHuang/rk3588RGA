@@ -41,11 +41,12 @@ public:
     }
     ~Detector();
 
-    bool init_crop(const char*model_path, int nThreadNum = 3);
-    bool init(const char* model_path);
+    bool init_old(const char* model_path);
+    bool init(const char*model_path, int nThreadNum = 3);
+    bool deinit_old();
     bool deinit();
-    bool deinit_crop();
-    stDetectResult* detect(char* pChar, int nWidth = 1920, int nHeight = 1080);
+    stDetectResult* detect_old(char* pChar, int nWidth = 1920, int nHeight = 1080);
+    stDetectResult* detect(char* pChar, int src_width, int src_height);
     void setThreshold(float fThreshold = 0.8f);
     void setThresholdList(float* fThresholdList, int nThresholdNum = 3);
     void setClassNum(int nClassNum = 13);
@@ -59,7 +60,6 @@ public:
     void setBranchNum(int nBranchNum);
     void setRootDirectory(const char* pChar);
 
-    stDetectResult* detect_crop(char* pChar, int src_width, int src_height);
 
 private:
     static Detector *m_pInstance;

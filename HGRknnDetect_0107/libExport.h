@@ -49,16 +49,16 @@ typedef struct stDetectResult {
 };
 
 // 初始化，输入权重模型路径名称，加载模型
-D_EXTERN_C D_SHARE_EXPORT bool init(const char* pModelString);
+D_EXTERN_C D_SHARE_EXPORT bool init_old(const char* pModelString);
 // 分片初始化
-D_EXTERN_C D_SHARE_EXPORT bool init_crop(const char* pModelString);
+D_EXTERN_C D_SHARE_EXPORT bool init(const char* pModelString);
 // 反初始化，释放模型 
+D_EXTERN_C D_SHARE_EXPORT bool deinit_old();
 D_EXTERN_C D_SHARE_EXPORT bool deinit();
-D_EXTERN_C D_SHARE_EXPORT bool deinit_crop();
 // 检测，输入图像数据及图像宽高，输出检测信息
-D_EXTERN_C D_SHARE_EXPORT stDetectResult* detect(char* pChar, int nWidth, int nHeight);
+D_EXTERN_C D_SHARE_EXPORT stDetectResult* detect_old(char* pChar, int nWidth, int nHeight);
 // 分片检测
-D_EXTERN_C D_SHARE_EXPORT stDetectResult* detect_crop(char* pChar, int src_width, int src_height);
+D_EXTERN_C D_SHARE_EXPORT stDetectResult* detect(char* pChar, int src_width, int src_height);
 // 打印性能统计信息到控制台
 D_EXTERN_C D_SHARE_EXPORT void printProfile();
 
