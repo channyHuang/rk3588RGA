@@ -1,6 +1,8 @@
 # rk3588RGA
 using rga in 3588 codes and notes
 
+最后更新日期: 20250212
+
 ## HGStream
 推拉流库。使用ffmedia让mpp用起来以提高帧率。支持c++/Python调用。
 
